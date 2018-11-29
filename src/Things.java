@@ -3,4 +3,8 @@ public class Things {
     public Things(String name){
         this.name = name;
     }
+
+    public String getName() {
+        return name;
+    }
 }
