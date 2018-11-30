@@ -43,7 +43,7 @@ public class Player extends People {
 
     ;
 
-    public static void openInventory() {
+    public  void openInventory() {
         for (int i = 0; i < Inventory.size(); i++) {
             System.out.println("Item " + (i + 1) + ": " + Inventory.get(i).getName());
         }
@@ -51,7 +51,7 @@ public class Player extends People {
 
     ;
 
-    public static void addItem(Things thing) {
+    public  void addItem(Things thing) {
         Inventory.add(thing);
     }
 
@@ -68,7 +68,12 @@ public class Player extends People {
         }
     }
 
-    ;
+    public static void beginAttack(){
+        System.out.println(
+                "__________  ____________  _______  ________  \n" +
+                "|1.Attack|  |2.Use Item|  |3.Run|  |4.Talk|  \n" +
+                "¯¯¯¯¯¯¯¯¯¯  ¯¯¯¯¯¯¯¯¯¯¯¯  ¯¯¯¯¯¯¯  ¯¯¯¯¯¯¯¯  \n");
+    }
 
     public static int getxCord() {
         return xCord;

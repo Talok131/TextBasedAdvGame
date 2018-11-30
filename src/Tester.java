@@ -23,7 +23,10 @@ public class Tester {
     }
     public static void playerChoice(char action) {
         switch (testNextTile(action)) {
-            case 3:
+            case 94:
+
+                break;
+            case 5:
                 if(cabinDoor.keyTest(Talon.useKey(0))){
                     System.out.println("You use the key to open the door.");
                     map.getMap()[7][5] = '_';
@@ -32,10 +35,10 @@ public class Tester {
                     System.out.println("You need the Cabin Key to open this door.");
                     break;
                 }
-            case 2:
+            case 1028:
                 Places.playerMove(action);
                 System.out.print(map);
-                gilbertGodfrey.firstInteraction(cabinKey);
+                gilbertGodfrey.Interaction(cabinKey, Talon);
                 break;
             case 1:
                 System.out.println("You push up against a wall and realize you aren't a ghost.");
@@ -47,7 +50,18 @@ public class Tester {
         }
     }
 
-    ;
+    public static void altAction(char action){
+        switch (action){
+            case 'o':
+                Talon.openInventory();
+                break;
+            case '\\':
+                break;
+            default :
+                System.out.println("Type H for help.");
+                break;
+        }
+    }
 
     public static int testNextTile(char action) {
         int x = Player.getxCord();
@@ -65,17 +79,29 @@ public class Tester {
             case 'e':
                 x += 1;
                 break;
+            default:
+                altAction(action);
         }
         switch (map.getMap()[y][x]) {
+            //Walls
             case '/':
             case '-':
             case '|':
             case '\\':
                 return 1;
+            //Gilbert Godfrey
             case 'G':
-                return 2;
+                return 1028;
+            //Doors
             case 'X':
-                return 3;
+                return 5;
+            //Zone Doors
+            case 'D':
+                return 10;
+            //Rats
+            case 'r':
+                return 94;
+            //Walking Tiles
             default:
                 return 0;
         }
