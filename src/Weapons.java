@@ -1,15 +1,20 @@
 public class Weapons extends Things{
-     private int damage;
+     private int damageMin;
+     private int damageMax;
      private String sound;
-     public Weapons(String name, String sound, int damage){
+     public Weapons(String name, String sound, int damageMin, int damageMax){
          super(name);
-         this.damage = damage;
+         this.damageMin = damageMin;
+         this.damageMax = damageMax;
          this.sound = sound;
      }
 
-    public int getDamage() {
-        return damage;
+    public int getDamageMin() {
+        return damageMin;
     }
+
+    public int getDamageMax() { return damageMax; }
+
     public String getSound() {
          return sound;
     }

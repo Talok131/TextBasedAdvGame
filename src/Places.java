@@ -47,6 +47,7 @@ public class Places {
     public char getCurrentTile() {
         return currentTile;
     }
+    public void setCurrentTile(char tile) { currentTile = tile; }
 
     public String toString() {
         String temp = "";

@@ -24,7 +24,12 @@ public class Tester {
     public static void playerChoice(char action) {
         switch (testNextTile(action)) {
             case 94:
-
+                Places.playerMove(action);
+                System.out.print(map);
+                Rat rat = new Rat(15,1,3,10,null);
+                Talon.beginAttack(rat);
+                map.setCurrentTile('_');
+                System.out.print(map);
                 break;
             case 5:
                 if(cabinDoor.keyTest(Talon.useKey(0))){
