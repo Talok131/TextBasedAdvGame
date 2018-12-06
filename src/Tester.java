@@ -6,15 +6,14 @@ public class Tester {
     static GilbertGodfrey gilbertGodfrey = new GilbertGodfrey("Gilber Godfrey", false);
     static KeyDoor cabinDoor = new KeyDoor("Cabin Door", 12345);
     static DoorKey cabinKey = new DoorKey("Cabin Key", 12345);
+    public static Coins coin = new Coins();
+    static Chests cabinChest = new Chests(coin);
     public static void main(String [] args){
         Talon.spawn();
         //How the program runs. Literally everything stems from interactions here.
         while(true) {
             playerChoice(whereTo());
         }
-
-
-
     }
 
     public static char whereTo(){
@@ -26,20 +25,37 @@ public class Tester {
             case 94:
                 Places.playerMove(action);
                 System.out.print(map);
-                Rat rat = new Rat(15,1,3,10,null);
+                Rat rat = new Rat(15,15,1,3,10,null);
                 Talon.beginAttack(rat);
                 map.setCurrentTile('_');
                 System.out.print(map);
                 break;
+            case 69:
+                cabinChest.collectChest(Talon);
+                Places.playerMove(action);
+                System.out.print(map);
+                break;
             case 5:
-                if(cabinDoor.keyTest(Talon.useKey(0))){
-                    System.out.println("You use the key to open the door.");
-                    map.getMap()[7][5] = '_';
-                    break;
+                if (Talon.isInventoryEmpty()){
+                    System.out.println("You need a key to open this door.");
                 } else {
-                    System.out.println("You need the Cabin Key to open this door.");
-                    break;
+                    Talon.openInventory();
+                    int temp = MyTools.readInt("Select the inventory location with the desired Key");
+                    try {
+                        if (cabinDoor.keyTest(Talon.useKey(temp - 1))) {
+                            System.out.println("You use the key to open the door.");
+                            map.getMap()[7][5] = '_';
+                            break;
+                        } else {
+                            System.out.println("You need the Cabin Key to open this door.");
+                            break;
+                        }
+                    } catch (ClassCastException e) {
+                        System.out.println("You must select a key.");
+                        break;
+                    }
                 }
+                break;
             case 1028:
                 Places.playerMove(action);
                 System.out.print(map);
@@ -106,10 +122,12 @@ public class Tester {
             //Rats
             case 'r':
                 return 94;
+                //Chests
+            case 'C':
+                return 69;
             //Walking Tiles
             default:
                 return 0;
         }
-
     }
 }

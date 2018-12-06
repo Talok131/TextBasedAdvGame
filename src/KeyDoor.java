@@ -5,7 +5,7 @@ public class KeyDoor extends Things{
     private int xCord;
     private int yCord;
     public KeyDoor(String name, int ID){
-        super(name);
+        super(name,"There's no way you can use this.");
         keyId = ID;
     }
     public boolean keyTest(DoorKey key){

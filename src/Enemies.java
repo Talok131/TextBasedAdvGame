@@ -1,16 +1,27 @@
 public class Enemies {
+    private int maxHealthPoints;
     private int healthPoints;
     private int damageMin;
     private int damageMax;
     private int expReward;
     private Things drops;
+    private int confusionVal = 0;
 
-    public Enemies(int hp, int dMIN, int dMAX, int exp, Things drop){
+    public Enemies(int mhp,int hp, int dMIN, int dMAX, int exp, Things drop){
+        maxHealthPoints = mhp;
         healthPoints = hp;
         damageMin = dMIN;
         damageMax = dMAX;
         expReward = exp;
         drops = drop;
+    }
+
+    public int getConfusionVal() {
+        return confusionVal;
+    }
+
+    public int getMaxHealthPoints() {
+        return maxHealthPoints;
     }
 
     public int getHealthPoints() {
@@ -33,13 +44,17 @@ public class Enemies {
         return drops;
     }
 
+    public void setConfusionVal(int confusionVal) {
+        this.confusionVal = confusionVal;
+    }
+
     public void takeDamage(int dam){
         healthPoints -= dam;
     }
 
     public void attack(Player ply){
         boolean hitOrMiss;
-        if(Math.random()*100 > 80){
+        if(Math.random()*100 > 80 - confusionVal){
             hitOrMiss = false;
         } else {
             hitOrMiss = true;

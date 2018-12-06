@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Player extends People {
 
-    private int maxHealthPoints;
+    private int maxHealthPoints = 100;
     private int healthPoints;
     private static int xCord;
     private static int yCord;
@@ -95,6 +95,10 @@ public class Player extends People {
         testLevel();
     }
 
+    public boolean isInventoryEmpty(){
+        return Inventory.isEmpty();
+    }
+
     public void testLevel(){
         if (level == 1){
             if (totalEXP == 10){
@@ -133,6 +137,8 @@ public class Player extends People {
                 break;
             case 2:
                 this.openInventory();
+                int temp = -1 + MyTools.readInt("Select the item number.");
+                System.out.println(Inventory.get(temp).getCombatUse(e));
                 break;
             case 3:
 

@@ -3,7 +3,7 @@ public class Weapons extends Things{
      private int damageMax;
      private String sound;
      public Weapons(String name, String sound, int damageMin, int damageMax){
-         super(name);
+         super("yeet",name);
          this.damageMin = damageMin;
          this.damageMax = damageMax;
          this.sound = sound;
