@@ -29,4 +29,16 @@ public class MyTools {
         int number = userInput.nextInt();
         return number;
     }
+
+    public static char readChar(String prompt){
+        Scanner userInput = new Scanner(System.in);
+        System.out.println(prompt);
+        while(!userInput.hasNextLine()){
+            userInput.nextLine();
+            System.out.print("Error\n" + prompt);
+        }
+        String str = userInput.nextLine();
+        char character = str.toLowerCase().charAt(0);
+        return character;
+    }
 }

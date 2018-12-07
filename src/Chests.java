@@ -48,6 +48,7 @@ public class Chests extends Things{
                 System.out.println("You gained "+loot.get(i)+"!");
                 ply.addItem(loot.get(i));
             }
+            looted = true;
         }
     }
 }

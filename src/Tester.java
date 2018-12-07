@@ -1,48 +1,63 @@
 import java.util.Scanner;
 
 public class Tester {
-    static Places map = new LowerDeck();
-    static Player Talon = new Player("Talon", false, 100, map);
-    static GilbertGodfrey gilbertGodfrey = new GilbertGodfrey("Gilber Godfrey", false);
-    static KeyDoor cabinDoor = new KeyDoor("Cabin Door", 12345);
-    static DoorKey cabinKey = new DoorKey("Cabin Key", 12345);
-    public static Coins coin = new Coins();
-    static Chests cabinChest = new Chests(coin);
+    static Coins coin = new Coins();
+    static LowerDeck ld = new LowerDeck();
+    static char[][] o = {{'a'}};
+    static Places map;
+    static Player Talon = new Player("Talon", false, 100);
+
     public static void main(String [] args){
+        switchMap(1);
         Talon.spawn();
         //How the program runs. Literally everything stems from interactions here.
         while(true) {
-            playerChoice(whereTo());
+            playerChoice(MyTools.readChar("What would you like to do? (Type H for help)"));
         }
     }
 
-    public static char whereTo(){
-        String temp = MyTools.readString("Where would you like to go? (n,s,e,w)");
-        return temp.charAt(0);
+    public static void switchMap(int num){
+        switch (num){
+            case 1:
+                map = ld;
+                break;
+            case 2:
+            case 3:
+                break;
+        }
     }
-    public static void playerChoice(char action) {
-        switch (testNextTile(action)) {
-            case 94:
-                Places.playerMove(action);
+
+    public static void ratTile(char action){
+        switch (map.getMapID()) {
+            case 1:
+                map.playerMove(action);
                 System.out.print(map);
-                Rat rat = new Rat(15,15,1,3,10,null);
+                Rat rat = new Rat(15, 15, 1, 3, 10, null);
                 Talon.beginAttack(rat);
                 map.setCurrentTile('_');
                 System.out.print(map);
-                break;
-            case 69:
-                cabinChest.collectChest(Talon);
-                Places.playerMove(action);
+        }
+    }
+
+    public static void chestTile(char action){
+        switch (map.getMapID()) {
+            case 1:
+                map.playerMove(action);
                 System.out.print(map);
-                break;
-            case 5:
-                if (Talon.isInventoryEmpty()){
+                ld.cabinChest.collectChest(Talon);
+        }
+    }
+
+    public static void lockedDoorTile(char action){
+        switch (map.getMapID()) {
+            case 1:
+                if (Talon.isInventoryEmpty()) {
                     System.out.println("You need a key to open this door.");
                 } else {
                     Talon.openInventory();
                     int temp = MyTools.readInt("Select the inventory location with the desired Key");
                     try {
-                        if (cabinDoor.keyTest(Talon.useKey(temp - 1))) {
+                        if (ld.cabinDoor.keyTest(Talon.useKey(temp - 1))) {
                             System.out.println("You use the key to open the door.");
                             map.getMap()[7][5] = '_';
                             break;
@@ -56,17 +71,41 @@ public class Tester {
                     }
                 }
                 break;
-            case 1028:
-                Places.playerMove(action);
+        }
+    }
+
+    public static void gilbertGodfreyTile(char action){
+        switch (map.getMapID()){
+            case 1:
+                map.playerMove(action);
                 System.out.print(map);
-                gilbertGodfrey.Interaction(cabinKey, Talon);
+                ld.gilbertGodfrey.Interaction();
+                break;
+        }
+    }
+
+    public static void playerChoice(char action) {
+        switch (testNextTile(action)) {
+            case 94:
+                ratTile(action);
+                break;
+            case 69:
+                chestTile(action);
+                break;
+            case 5:
+                lockedDoorTile(action);
+                break;
+            case 1028:
+                gilbertGodfreyTile(action);
                 break;
             case 1:
                 System.out.println("You push up against a wall and realize you aren't a ghost.");
                 break;
             case 0:
-                Places.playerMove(action);
+                map.playerMove(action);
                 System.out.print(map);
+                break;
+            case -1:
                 break;
         }
     }
@@ -74,9 +113,15 @@ public class Tester {
     public static void altAction(char action){
         switch (action){
             case 'o':
-                Talon.openInventory();
+                Talon.openInventoryMenu();
                 break;
-            case '\\':
+            case 'h':
+                System.out.println("Type N, S, W, E to move." +
+                        "\nType O to open your inventory menu." +
+                        "\nType M to re-open the map.");
+                break;
+            case 'm':
+                System.out.println(map);
                 break;
             default :
                 System.out.println("Type H for help.");
@@ -85,8 +130,9 @@ public class Tester {
     }
 
     public static int testNextTile(char action) {
-        int x = Player.getxCord();
-        int y = Player.getyCord();
+        int x = Talon.getxCord();
+        int y = Talon.getyCord();
+        boolean moved = true;
         switch (action) {
             case 'n':
                 y -= 1;
@@ -101,33 +147,38 @@ public class Tester {
                 x += 1;
                 break;
             default:
+                moved = false;
                 altAction(action);
+                break;
         }
-        switch (map.getMap()[y][x]) {
-            //Walls
-            case '/':
-            case '-':
-            case '|':
-            case '\\':
-                return 1;
-            //Gilbert Godfrey
-            case 'G':
-                return 1028;
-            //Doors
-            case 'X':
-                return 5;
-            //Zone Doors
-            case 'D':
-                return 10;
-            //Rats
-            case 'r':
-                return 94;
+        if (moved) {
+            switch (map.getMap()[y][x]) {
+                //Walls
+                case '/':
+                case '-':
+                case '|':
+                case '\\':
+                    return 1;
+                //Gilbert Godfrey
+                case 'G':
+                    return 1028;
+                //Doors
+                case 'X':
+                    return 5;
+                //Zone Doors
+                case 'D':
+                    return 10;
+                //Rats
+                case 'r':
+                    return 94;
                 //Chests
-            case 'C':
-                return 69;
-            //Walking Tiles
-            default:
-                return 0;
+                case 'C':
+                    return 69;
+                //Walking Tiles
+                default:
+                    return 0;
+            }
         }
+        return -1;
     }
 }

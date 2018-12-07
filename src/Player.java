@@ -9,22 +9,20 @@ public class Player extends People {
     private static ArrayList<Things> Inventory = new ArrayList<Things>();
     private Things hatSlot;
     private Weapons weapon = new Weapons("Fists", "*POW POW*", 2,4);
-    private static Places map;
     private int totalEXP;
     private int level = 1;
 
 
-    public Player(String name, boolean isCanadian, int healthPoints, Places maps) {
+    public Player(String name, boolean isCanadian, int healthPoints) {
         super(name, isCanadian);
         this.healthPoints = healthPoints;
         xCord = 5;
         yCord = 9;
-        map = maps;
     }
 
-    public static void spawn() {
-        map.playerMove('f');
-        System.out.print(map);
+    public void spawn() {
+        Tester.map.playerMove('f');
+        System.out.print(Tester.map);
 
     }
 
@@ -41,8 +39,20 @@ public class Player extends People {
 
     ;
 
-    public static void equipWeapon() {
+    public void equipWeapon() {
 
+        try {
+            int loco = -1 + MyTools.readInt("Enter the inventory location of your desired weapon.");
+            Weapons temp;
+            temp = weapon;
+            weapon = (Weapons) Inventory.get(loco);
+            removeItem(loco);
+            Inventory.add(temp);
+            System.out.println("You equip the " + weapon.toString());
+        } catch (ClassCastException e){
+            System.out.println("You can only equip weapons.");
+            equipWeapon();
+        }
     }
 
     ;
@@ -53,7 +63,48 @@ public class Player extends People {
         }
     }
 
+    public void openInventoryMenu() {
+        boolean menuUp = true;
+        System.out.println("\'I\': Inventory\n" +
+                "\'C\': Check Self\n" +
+                "\'E\': Equip weapon\n" +
+                "\'U\': Use item\n" +
+                "\'Q\': Exit menu");
+        while (menuUp){
+            char act = MyTools.readChar("");
+            switch (act) {
+                case 'i':
+                    openInventory();
+                    break;
+                case 'c':
+                    System.out.println("Health: " + healthPoints + "/" + maxHealthPoints);
+                    System.out.println("Level: " + level);
+                    System.out.println("Weapon: " + weapon.toString());
+                    break;
+                case 'e':
+                    if (isInventoryEmpty()) {
+                        System.out.println("Your inventory is empty");
+                        break;
+                    } else {
+                        openInventory();
+                        equipWeapon();
+                        break;
+                    }
+                case 'u':
+                    break;
+                case 'q':
+                    menuUp = false;
+                    break;
+            }
+        }
+
+
+    }
     ;
+
+    public void removeItem(int index) {
+        Inventory.remove(index);
+    }
 
     public  void addItem(Things thing) {
         Inventory.add(thing);
