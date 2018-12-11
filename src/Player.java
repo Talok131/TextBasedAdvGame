@@ -125,7 +125,24 @@ public class Player extends People {
 
     public void beginAttack(Enemies e){
         while (true){
-            System.out.println(e.getHealthPoints() + "   " + healthPoints);
+            String eHitBar = "_________________\n|";
+            String pHitBar = "_________________\n|";
+            for (float temp = healthPoints; temp > 0.0; temp -=(float)(maxHealthPoints/10.0)){
+                pHitBar+="█";
+            }
+            for (float temp = e.getHealthPoints(); temp > 0.0; temp-=(float)(e.getMaxHealthPoints()/10.0)){
+                eHitBar+="█";
+            }
+            for (int i = pHitBar.length(); i < 30; i = pHitBar.length()){
+                pHitBar+="■";
+            }
+            for (int i = eHitBar.length(); i < 30; i = eHitBar.length()){
+                eHitBar+="■";
+            }
+            eHitBar+="|\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
+            pHitBar+="|\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
+            System.out.println(eHitBar);
+            System.out.println(pHitBar);
             if (e.getHealthPoints() <= 0) {
                 System.out.println("You defeated the enemy!");
                 System.out.println("You gained " + e.getExpReward() + " EXP!");

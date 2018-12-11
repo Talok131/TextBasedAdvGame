@@ -28,10 +28,13 @@ public class Tester {
     }
 
     public static void ratTile(char action){
+        System.out.println("A large rat stares you down menacingly...");
+        System.out.println( "________________________________________" +
+                          "\n|                FIGHT!                |" +
+                          "\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯");
         switch (map.getMapID()) {
             case 1:
                 map.playerMove(action);
-                System.out.print(map);
                 Rat rat = new Rat(15, 15, 1, 3, 10, null);
                 Talon.beginAttack(rat);
                 map.setCurrentTile('_');
