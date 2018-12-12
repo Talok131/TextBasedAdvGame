@@ -4,7 +4,6 @@ public class Tester {
     static Coins coin = new Coins();
     static LowerDeck ld = new LowerDeck();
     static UpperDeck ud = new UpperDeck();
-    static Pirates pirates = new Pirates();
     static char[][] o = {{'a'}};
     static Places map;
     static Player Talon = new Player("Talon", false, 100);
@@ -12,7 +11,7 @@ public class Tester {
     public static void main(String [] args){
         switchMap(1);
         Talon.spawn();
-        if (MyTools.readString("Press enter to begin...").equals("tgm"));
+        if ((MyTools.readString("Press enter to begin...")).equals("tgm"))
             Talon.tgm();
         //How the program runs. Literally everything stems from interactions here.
         while(true) {
@@ -29,6 +28,7 @@ public class Tester {
                 map = ud;
                 break;
             case 3:
+                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n The map is in your IMMMAGINATIONNNN");
                 break;
         }
     }
@@ -96,10 +96,16 @@ public class Tester {
     public static void zoneDoorTile(char action){
         switch (map.getMapID()){
             case 1:
+                ld.getMap()[1][5] = '_';
+                ld.getMap()[1][7] = '_';
                 switchMap(2);
                 Talon.spawn();
                 break;
             case 2:
+                ud.getMap()[1][5] = '_';
+                ud.getMap()[1][7] = '_';
+                ld.setPlayerStartingX(6);
+                ld.setPlayerStartingY(2);
                 switchMap(1);
                 Talon.spawn();
                 break;
@@ -111,7 +117,7 @@ public class Tester {
             case 2:
                 map.playerMove(action);
                 System.out.print(map);
-                pirates.interaction();
+                ud.pirates.interaction();
                 break;
         }
     }
@@ -124,6 +130,8 @@ public class Tester {
             case 69:
                 chestTile(action);
                 break;
+            case 420:
+                ud.captain.interaction(Talon);
             case 5:
                 lockedDoorTile(action);
                 break;
@@ -198,6 +206,7 @@ public class Tester {
                 case '\\':
                 case '║':
                 case 'Ø':
+                case '~':
                     return 1;
                 //Gilbert Godfrey
                 case 'G':
@@ -214,6 +223,8 @@ public class Tester {
                 //Chests
                 case 'c':
                     return 69;
+                case 'C':
+                    return 420;
                 //YAR HAR FIDDILEY DEE
                 case 'P':
                     return 13;

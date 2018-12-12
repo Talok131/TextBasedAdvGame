@@ -48,6 +48,7 @@ public class Places {
     public char getCurrentTile() {
         return currentTile;
     }
+
     public void setCurrentTile(char tile) { currentTile = tile; }
 
     public int getMapID() {
@@ -82,5 +83,13 @@ public class Places {
 
     public int getPlayerStartingY() {
         return playerStartingY;
+    }
+
+    public void setPlayerStartingX(int playerStartingX) {
+        this.playerStartingX = playerStartingX;
+    }
+
+    public void setPlayerStartingY(int playerStartingY) {
+        this.playerStartingY = playerStartingY;
     }
 }
