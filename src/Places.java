@@ -75,4 +75,12 @@ public class Places {
     public char[][] getMap() {
         return map;
     }
+
+    public int getPlayerStartingX() {
+        return playerStartingX;
+    }
+
+    public int getPlayerStartingY() {
+        return playerStartingY;
+    }
 }

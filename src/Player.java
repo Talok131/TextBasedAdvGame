@@ -20,10 +20,18 @@ public class Player extends People {
         yCord = 9;
     }
 
+    public void tgm(){
+        maxHealthPoints = 99999;
+        healthPoints = maxHealthPoints;
+        equipWeapon(new Weapons("God Sword", "MOVE B**** GET OUT THE WAY", 100, 200));
+        addItem(new DoorKey("Cabin Key", 12345));
+    }
+
     public void spawn() {
+        xCord = Tester.map.getPlayerStartingX();
+        yCord = Tester.map.getPlayerStartingY();
         Tester.map.playerMove('f');
         System.out.print(Tester.map);
-
     }
 
 
@@ -38,6 +46,10 @@ public class Player extends People {
     }
 
     ;
+
+    public void equipWeapon(Weapons wep){
+        weapon = wep;
+    }
 
     public void equipWeapon() {
 
@@ -69,6 +81,7 @@ public class Player extends People {
                 "\'C\': Check Self\n" +
                 "\'E\': Equip weapon\n" +
                 "\'U\': Use item\n" +
+                "\'D\': Drop item\n" +
                 "\'Q\': Exit menu");
         while (menuUp){
             char act = MyTools.readChar("");
@@ -95,6 +108,9 @@ public class Player extends People {
                 case 'q':
                     menuUp = false;
                     break;
+                case 'd':
+                    int index = MyTools.readInt("Select the item you would like to drop.");
+                    removeItem(index-1);
             }
         }
 
@@ -133,10 +149,10 @@ public class Player extends People {
             for (float temp = e.getHealthPoints(); temp > 0.0; temp-=(float)(e.getMaxHealthPoints()/10.0)){
                 eHitBar+="█";
             }
-            for (int i = pHitBar.length(); i < 30; i = pHitBar.length()){
+            for (int i = pHitBar.length(); i < 29; i = pHitBar.length()){
                 pHitBar+="■";
             }
-            for (int i = eHitBar.length(); i < 30; i = eHitBar.length()){
+            for (int i = eHitBar.length(); i < 29; i = eHitBar.length()){
                 eHitBar+="■";
             }
             eHitBar+="|\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";

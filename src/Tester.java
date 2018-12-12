@@ -3,6 +3,8 @@ import java.util.Scanner;
 public class Tester {
     static Coins coin = new Coins();
     static LowerDeck ld = new LowerDeck();
+    static UpperDeck ud = new UpperDeck();
+    static Pirates pirates = new Pirates();
     static char[][] o = {{'a'}};
     static Places map;
     static Player Talon = new Player("Talon", false, 100);
@@ -10,6 +12,8 @@ public class Tester {
     public static void main(String [] args){
         switchMap(1);
         Talon.spawn();
+        if (MyTools.readString("Press enter to begin...").equals("tgm"));
+            Talon.tgm();
         //How the program runs. Literally everything stems from interactions here.
         while(true) {
             playerChoice(MyTools.readChar("What would you like to do? (Type H for help)"));
@@ -22,6 +26,8 @@ public class Tester {
                 map = ld;
                 break;
             case 2:
+                map = ud;
+                break;
             case 3:
                 break;
         }
@@ -62,7 +68,7 @@ public class Tester {
                     try {
                         if (ld.cabinDoor.keyTest(Talon.useKey(temp - 1))) {
                             System.out.println("You use the key to open the door.");
-                            map.getMap()[7][5] = '_';
+                            map.getMap()[8][6] = '_';
                             break;
                         } else {
                             System.out.println("You need the Cabin Key to open this door.");
@@ -87,6 +93,29 @@ public class Tester {
         }
     }
 
+    public static void zoneDoorTile(char action){
+        switch (map.getMapID()){
+            case 1:
+                switchMap(2);
+                Talon.spawn();
+                break;
+            case 2:
+                switchMap(1);
+                Talon.spawn();
+                break;
+        }
+    }
+
+    public static void pirateTile(char action){
+        switch (map.getMapID()){
+            case 2:
+                map.playerMove(action);
+                System.out.print(map);
+                pirates.interaction();
+                break;
+        }
+    }
+
     public static void playerChoice(char action) {
         switch (testNextTile(action)) {
             case 94:
@@ -100,6 +129,12 @@ public class Tester {
                 break;
             case 1028:
                 gilbertGodfreyTile(action);
+                break;
+            case 13:
+                pirateTile(action);
+                break;
+            case 10:
+                zoneDoorTile(action);
                 break;
             case 1:
                 System.out.println("You push up against a wall and realize you aren't a ghost.");
@@ -161,6 +196,8 @@ public class Tester {
                 case '-':
                 case '|':
                 case '\\':
+                case '║':
+                case 'Ø':
                     return 1;
                 //Gilbert Godfrey
                 case 'G':
@@ -175,8 +212,11 @@ public class Tester {
                 case 'r':
                     return 94;
                 //Chests
-                case 'C':
+                case 'c':
                     return 69;
+                //YAR HAR FIDDILEY DEE
+                case 'P':
+                    return 13;
                 //Walking Tiles
                 default:
                     return 0;
