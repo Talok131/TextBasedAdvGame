@@ -5,7 +5,7 @@ public class DoorKey extends Things {
         keyId = ID;
     }
 
-    public String getCombatUse(Enemies e){
+    public String getCombatUse(Enemies e) {
         e.setConfusionVal(5);
         return super.getCombatUse(e);
     }

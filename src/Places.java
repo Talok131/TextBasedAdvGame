@@ -49,7 +49,9 @@ public class Places {
         return currentTile;
     }
 
-    public void setCurrentTile(char tile) { currentTile = tile; }
+    public void setCurrentTile(char tile) {
+        currentTile = tile;
+    }
 
     public int getMapID() {
         return mapID;

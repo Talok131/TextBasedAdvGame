@@ -8,7 +8,7 @@ public class Player extends People {
     private static int yCord;
     private static ArrayList<Things> Inventory = new ArrayList<Things>();
     private Things hatSlot;
-    private Weapons weapon = new Weapons("Fists", "*POW POW*", 2,4);
+    private Weapons weapon = new Weapons("Fists", "*POW POW*", 2, 4);
     private int totalEXP;
     private int level = 1;
 
@@ -20,7 +20,7 @@ public class Player extends People {
         yCord = 9;
     }
 
-    public void tgm(){
+    public void tgm() {
         maxHealthPoints = 99999;
         healthPoints = maxHealthPoints;
         equipWeapon(new Weapons("God Sword", "MOVE B**** GET OUT THE WAY", 100, 200));
@@ -34,7 +34,13 @@ public class Player extends People {
         System.out.print(Tester.map);
     }
 
-
+    public void heal(int hp){
+        if(healthPoints+hp > maxHealthPoints){
+            healthPoints = maxHealthPoints;
+        } else {
+            healthPoints+=hp;
+        }
+    }
 
     public static void interact() {
     }
@@ -47,7 +53,7 @@ public class Player extends People {
 
     ;
 
-    public void equipWeapon(Weapons wep){
+    public void equipWeapon(Weapons wep) {
         weapon = wep;
     }
 
@@ -61,7 +67,7 @@ public class Player extends People {
             removeItem(loco);
             Inventory.add(temp);
             System.out.println("You equip the " + weapon.toString());
-        } catch (ClassCastException e){
+        } catch (ClassCastException e) {
             System.out.println("You can only equip weapons.");
             equipWeapon();
         }
@@ -83,11 +89,15 @@ public class Player extends People {
                 "\'U\': Use item\n" +
                 "\'D\': Drop item\n" +
                 "\'Q\': Exit menu");
-        while (menuUp){
+        while (menuUp) {
             char act = MyTools.readChar("");
             switch (act) {
                 case 'i':
-                    openInventory();
+                    if (isInventoryEmpty()) {
+                        System.out.println("Your inventory is empty");
+                    } else {
+                        openInventory();
+                    }
                     break;
                 case 'c':
                     System.out.println("Health: " + healthPoints + "/" + maxHealthPoints);
@@ -97,32 +107,44 @@ public class Player extends People {
                 case 'e':
                     if (isInventoryEmpty()) {
                         System.out.println("Your inventory is empty");
-                        break;
                     } else {
                         openInventory();
                         equipWeapon();
-                        break;
                     }
+                    break;
                 case 'u':
+                    if (isInventoryEmpty()) {
+                        System.out.println("Your inventory is empty");
+                    } else {
+                        openInventory();
+                        int temp = MyTools.readInt("Select the item you wish to use.");
+                        if(Inventory.get(temp-1).equals(new Bandages())){
+                            removeItem(temp-1);
+                            Bandages.normalUse(this);
+                        } else {
+                            System.out.println("This item is useless right now.");
+                        }
+                    }
                     break;
                 case 'q':
                     menuUp = false;
                     break;
                 case 'd':
                     int index = MyTools.readInt("Select the item you would like to drop.");
-                    removeItem(index-1);
+                    removeItem(index - 1);
             }
         }
 
 
     }
+
     ;
 
     public void removeItem(int index) {
         Inventory.remove(index);
     }
 
-    public  void addItem(Things thing) {
+    public void addItem(Things thing) {
         Inventory.add(thing);
     }
 
@@ -133,37 +155,37 @@ public class Player extends People {
     public DoorKey useKey(int index) {
         try {
             return (DoorKey) Inventory.get(index);
-        } catch (IndexOutOfBoundsException e){
-            DoorKey key = new DoorKey("This doesnt exsist", 0);
+        } catch (IndexOutOfBoundsException e) {
+            DoorKey key = new DoorKey("This doesn't exsist", 0);
             return key;
         }
     }
 
-    public void beginAttack(Enemies e){
-        while (true){
+    public void beginAttack(Enemies e) {
+        while (true) {
             String eHitBar = "_________________\n|";
             String pHitBar = "_________________\n|";
-            for (float temp = healthPoints; temp > 0.0; temp -=(float)(maxHealthPoints/10.0)){
-                pHitBar+="█";
+            for (float temp = healthPoints; temp > 0.0; temp -= (float) (maxHealthPoints / 10.0)) {
+                pHitBar += "█";
             }
-            for (float temp = e.getHealthPoints(); temp > 0.0; temp-=(float)(e.getMaxHealthPoints()/10.0)){
-                eHitBar+="█";
+            for (float temp = e.getHealthPoints(); temp > 0.0; temp -= (float) (e.getMaxHealthPoints() / 10.0)) {
+                eHitBar += "█";
             }
-            for (int i = pHitBar.length(); i < 29; i = pHitBar.length()){
-                pHitBar+="■";
+            for (int i = pHitBar.length(); i < 29; i = pHitBar.length()) {
+                pHitBar += "■";
             }
-            for (int i = eHitBar.length(); i < 29; i = eHitBar.length()){
-                eHitBar+="■";
+            for (int i = eHitBar.length(); i < 29; i = eHitBar.length()) {
+                eHitBar += "■";
             }
-            eHitBar+="|\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
-            pHitBar+="|\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
+            eHitBar += "|\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
+            pHitBar += "|\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
             System.out.println(eHitBar);
             System.out.println(pHitBar);
             if (e.getHealthPoints() <= 0) {
                 System.out.println("You defeated the enemy!");
                 System.out.println("You gained " + e.getExpReward() + " EXP!");
                 addEXP(e.getExpReward());
-                if (e.getDrops() != null){
+                if (e.getDrops() != null) {
                     addItem(e.getDrops());
                     System.out.println("The enemy dropped a " + e.getDrops());
                 }
@@ -174,24 +196,24 @@ public class Player extends People {
         }
     }
 
-    public void addEXP(int exp){
+    public void addEXP(int exp) {
         totalEXP += exp;
         testLevel();
     }
 
-    public boolean isInventoryEmpty(){
+    public boolean isInventoryEmpty() {
         return Inventory.isEmpty();
     }
 
-    public void testLevel(){
-        if (level == 1){
-            if (totalEXP == 10){
+    public void testLevel() {
+        if (level == 1) {
+            if (totalEXP == 10) {
                 System.out.println("You leveled up!");
                 maxHealthPoints += 20;
                 healthPoints = maxHealthPoints;
                 level = 2;
             }
-        } else if (totalEXP >= 5*(level-1)*10){
+        } else if (totalEXP >= 5 * (level - 1) * 10) {
             System.out.println("You leveled up!");
             maxHealthPoints += 20;
             healthPoints = maxHealthPoints;
@@ -199,20 +221,20 @@ public class Player extends People {
         }
     }
 
-    public void getCombatAction(Enemies e){
-        int action = MyTools.readInt(   "__________  ____________  _______  ________  \n" +
-                                                "|1.Attack|  |2.Use Item|  |3.Run|  |4.Talk|  \n" +
-                                                "¯¯¯¯¯¯¯¯¯¯  ¯¯¯¯¯¯¯¯¯¯¯¯  ¯¯¯¯¯¯¯  ¯¯¯¯¯¯¯¯  \n");
-        switch (action){
+    public void getCombatAction(Enemies e) {
+        int action = MyTools.readInt("__________  ____________  _______  ________  \n" +
+                "|1.Attack|  |2.Use Item|  |3.Run|  |4.Talk|  \n" +
+                "¯¯¯¯¯¯¯¯¯¯  ¯¯¯¯¯¯¯¯¯¯¯¯  ¯¯¯¯¯¯¯  ¯¯¯¯¯¯¯¯  \n");
+        switch (action) {
             case 1:
                 boolean hitOrMiss;
-                if(Math.random()*100 > (80+ level)){
+                if (Math.random() * 100 > (80 + level)) {
                     hitOrMiss = false;
                 } else {
                     hitOrMiss = true;
                 }
-                if(hitOrMiss) {
-                    int temp = (int) Math.round((level-1)+(Math.random() * (weapon.getDamageMax() - weapon.getDamageMin())) + weapon.getDamageMin());
+                if (hitOrMiss) {
+                    int temp = (int) Math.round((level - 1) + (Math.random() * (weapon.getDamageMax() - weapon.getDamageMin())) + weapon.getDamageMin());
                     e.takeDamage(temp);
                     System.out.println("You attack for " + temp + " damage!");
                 } else {
@@ -247,5 +269,7 @@ public class Player extends People {
         yCord = y;
     }
 
-    public void takeDamage(int dam){ healthPoints -= dam; }
+    public void takeDamage(int dam) {
+        healthPoints -= dam;
+    }
 }

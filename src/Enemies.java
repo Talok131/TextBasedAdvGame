@@ -7,7 +7,7 @@ public class Enemies {
     private Things drops;
     private int confusionVal = 0;
 
-    public Enemies(int mhp,int hp, int dMIN, int dMAX, int exp, Things drop){
+    public Enemies(int mhp, int hp, int dMIN, int dMAX, int exp, Things drop) {
         maxHealthPoints = mhp;
         healthPoints = hp;
         damageMin = dMIN;
@@ -48,18 +48,18 @@ public class Enemies {
         this.confusionVal = confusionVal;
     }
 
-    public void takeDamage(int dam){
+    public void takeDamage(int dam) {
         healthPoints -= dam;
     }
 
-    public void attack(Player ply){
+    public void attack(Player ply) {
         boolean hitOrMiss;
-        if(Math.random()*100 > 80 - confusionVal){
+        if (Math.random() * 100 > 80 - confusionVal) {
             hitOrMiss = false;
         } else {
             hitOrMiss = true;
         }
-        if(hitOrMiss) {
+        if (hitOrMiss) {
             int temp = (int) Math.round((Math.random() * (getDamageMax() - getDamageMin())) + getDamageMin());
             ply.takeDamage(temp);
             System.out.println("The enemy attacks you for " + temp + " damage!");
