@@ -1,7 +1,7 @@
 public class Shore extends Places {
 
     public Shore() {
-        super("Upper Deck", shore, 20, 8, 2);
+        super("Upper Deck", shore, 20, 8, 3);
     }
 
     static char[][] shore =
