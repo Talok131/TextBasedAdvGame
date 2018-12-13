@@ -181,6 +181,10 @@ public class Player extends People {
             pHitBar += "|\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
             System.out.println(eHitBar);
             System.out.println(pHitBar);
+            if (healthPoints <= 0){
+                System.out.println("Game Over.");
+                Tester.gameOver = true;
+            }
             if (e.getHealthPoints() <= 0) {
                 System.out.println("You defeated the enemy!");
                 System.out.println("You gained " + e.getExpReward() + " EXP!");
