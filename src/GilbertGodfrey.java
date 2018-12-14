@@ -1,4 +1,4 @@
-public class GilbertGodfrey extends NPC {
+public class GilbertGodfrey extends People {
     private boolean isFirstInteraction = true;
     private boolean firstIslandInteaction = true;
 
